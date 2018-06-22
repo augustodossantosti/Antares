@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">Antares</string>
+
+    <!-- Toobar -->
+
+    <string name="opt_search">Busca</string>
+    <string name="opt_export">Exportar</string>
+    <string name="opt_settings">Configurações</string>
+
+    <!-- Activities titles -->
+
+    <string name="activity_courses_title">Cursos</string>
+    <string name="activity_lessons_title">Lissões</string>
+    <string name="activity_topics_title">Tópicos</string>
+    <string name="activity_registers_title">Registros</string>
+
+    <!-- Forms -->
+
+    <string name="new_topic_name">Tópico:</string>
+    <string name="new_topic_professor_name">Professor:</string>
+    <string name="new_topic_description">Descrição:</string>
+    <string name="new_lesson_subject">Assunto:</string>
+    <string name="new_lesson_description">Descrição:</string>
+    <string name="btn_save">Salvar</string>
+    <string name="btn_cancel">Cancelar</string>
+
+    <!-- Introduction Slides -->
+
+    <string name="slide_app_presentation_title">Chega de perder conteúdo!</string>
+    <string name="slide_app_presentation_content">
+        \nDiga adeus para aquelas fotos que você tira do caderno dos amigos e que
+        se perdem na sua galeria. Agora tudo isso pode ser organizado facilmente.
+    </string>
+
+    <string name="slide_camera_permission_title">Use sua câmera!</string>
+    <string name="slide_camera_permission_content">
+        \nTire fotos ou grave vídeos do conteúdo das suas aulas de forma simples.\n
+        Só precisamos da sua permissão para usa-la ;)
+    </string>
+
+    <string name="slide_audio_record_permission_title">Grave notas de Áudio</string>
+    <string name="slide_audio_record_permission_content">
+        \nVocê pode fazer registros em áudio para notas ou explicações do
+        conteúdo da disciplina.\n
+        Basta liberar o uso do microdone :)
+    </string>
+
+    <string name="slide_use_terms_title">Termos e condições de uso</string>
+    <string name="slide_use_terms_content">
+        Ao utilizar o aplicativo você concorda com os termos e condições de uso definidos
+        pela eevee software.\n
+        Não nos resposabilizamos por uso indevído do software bem como por possíveis perdas
+        de conteúdo devido a má utilização do mesmo.\n
+        Mantenha sempre um BKP para garantir a segurança dos seus dados.
+    </string>
+    <string name="slide_use_terms_checkbox_label">Concordo com os termos e condições de uso</string>
+    <string name="slide_use_terms_checkbox_error">
+        Você precisa concordar com os termos e condições de uso para prosseguir!
+    </string>
+
+    <!-- Permissions -->
+
+    <string name="grant_permissions">Conceder Permissões</string>
+    <string name="mis_grant_permissions">Conceder Permissões</string>
+    <string name="please_grant_permissions">Você deve liberar a utilização da câmera :)</string>
+    <string name="camera_request_rationale">O app requer acesso a câmera</string>
+    <string name="error_message">Failed!</string>
+
+
+</resources>

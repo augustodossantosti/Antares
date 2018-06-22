@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="br.com.antares">
+
+    <!-- PERMISSÕES NECESSÁRIAS PARA O APP -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:name=".utils.Application"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".activities.IntroductionSlide"
+            android:theme="@style/Theme.Intro">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.ListCourses" />
+        <activity android:name=".activities.RegisterCourse" />
+        <activity android:name=".activities.ListTopics" />
+        <activity android:name=".activities.RegisterTopic" />
+        <activity android:name=".activities.BaseActivity" />
+        <activity android:name=".activities.ListLessons" />
+        <activity android:name=".activities.RegisterLesson" />
+        <activity android:name=".activities.ListRegisters" />
+    </application>
+
+</manifest>
