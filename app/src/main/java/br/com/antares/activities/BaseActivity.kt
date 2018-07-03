@@ -72,6 +72,18 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     /**
+     * Delega as operações referentes a permissões do uso da câmera
+     * e acesso ao armazenamento interno a lib EasyPermissions.
+     */
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,
+                                            grantResults: IntArray) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions,
+                grantResults, this)
+    }
+
+    /**
      * Cria o menu da Toolbar.
      */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

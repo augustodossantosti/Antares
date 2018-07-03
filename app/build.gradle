@@ -45,7 +45,11 @@ dependencies {
     // Lib para criação das telas de introdução do app
     implementation 'agency.tango.android:material-intro-screen:0.0.5'
 
+    // Lib para criar carrousel de imagens
     implementation 'com.yarolegovich:discrete-scrollview:1.4.7'
+
+    // Lib para ImageView com suporte a gestos
+    implementation 'com.alexvasilkov:gesture-views:2.5.2'
 
     // Lib para ORM
     implementation 'com.j256.ormlite:ormlite-android:5.1'

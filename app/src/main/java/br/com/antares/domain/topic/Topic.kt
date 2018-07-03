@@ -22,7 +22,6 @@ import com.j256.ormlite.table.DatabaseTable
 data class Topic(@DatabaseField(columnName = "TOP_ID", generatedId = true) var id: Long? = null,
                  @DatabaseField(columnName = "TOP_NAME") var name: String? = null,
                  @DatabaseField(columnName = "TOP_PROFESSOR_NAME") var professorName: String? = null,
-                 @DatabaseField(columnName = "TOP_DESCRIPTION") var description: String? = null,
                  @DatabaseField(columnName = "TOP_COVER_PATH") var coverPath: String? = null,
                  @DatabaseField(canBeNull = false, foreign = true, columnName = "COU_ID") var course: Course? = null,
                  @ForeignCollectionField var lessons: ForeignCollection<Lesson>? = null) : Parcelable {
@@ -32,14 +31,12 @@ data class Topic(@DatabaseField(columnName = "TOP_ID", generatedId = true) var i
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
-            parcel.readString(),
             parcel.readParcelable(Course::class.java.classLoader))
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(id)
         parcel.writeString(name)
         parcel.writeString(professorName)
-        parcel.writeString(description)
         parcel.writeString(coverPath)
         parcel.writeParcelable(course, flags)
     }

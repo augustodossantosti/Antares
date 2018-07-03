@@ -94,28 +94,10 @@ class ListLessons : BaseActivity() {
         super.onDestroy()
     }
 
-    /**
-     * Delega as operações referentes a permissões do uso da câmera
-     * e acesso ao armazenamento interno a lib EasyPermissions.
-     */
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,
-                                            grantResults: IntArray) {
-
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions,
-                grantResults, this)
-    }
-
-    /**
-     * Atualiza a listagem de tópicos exibida ao usuário.
-     */
     private fun updateList(lessons: List<Lesson>) {
         lessonAdapter.updateLessons(lessons)
     }
 
-    /**
-     *
-     */
     private fun createLessonWithRegister(): Lesson {
         val lesson = Lesson(subject = "", description = "", create_Date = Date(), topic = topic)
         courseService.createOrUpdateLesson(lesson)

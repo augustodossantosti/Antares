@@ -5,4 +5,7 @@
     <dimen name="photo_height">200dp</dimen>
     <dimen name="photo_width">300dp</dimen>
 
+    <dimen name="photo_height_full"></dimen>
+    <dimen name="photo_width_full"></dimen>
+
 </resources>

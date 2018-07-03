@@ -18,13 +18,11 @@ import com.j256.ormlite.table.DatabaseTable
 data class Course(@DatabaseField(columnName = "COU_ID", generatedId = true) var id: Long? = null,
                   @DatabaseField(columnName = "COU_NAME") var name: String? = null,
                   @DatabaseField(columnName = "COU_INSTITUTION") var institution: String? = null,
-                  @DatabaseField(columnName = "COU_DESCRIPTION") var description: String? = null,
                   @DatabaseField(columnName = "COU_COVER_PATH") var coverPath: String? = null,
                   @ForeignCollectionField var topics: ForeignCollection<Topic>? = null) : Parcelable {
 
     constructor(parcel: Parcel) : this (
             parcel.readValue(Long::class.java.classLoader) as? Long,
-            parcel.readString(),
             parcel.readString(),
             parcel.readString(),
             parcel.readString()
@@ -34,7 +32,6 @@ data class Course(@DatabaseField(columnName = "COU_ID", generatedId = true) var 
         parcel.writeValue(id)
         parcel.writeString(name)
         parcel.writeString(institution)
-        parcel.writeString(description)
         parcel.writeString(coverPath)
     }
 

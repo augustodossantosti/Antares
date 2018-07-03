@@ -10,7 +10,7 @@ import br.com.antares.infra.CourseService
 import kotlinx.android.synthetic.main.activity_register_topic.*
 
 /**
- *
+ * Tela para cadastro de novos tópicos.
  *
  * @author Augusto Santos
  * @version 1.0
@@ -33,7 +33,6 @@ class RegisterTopic : AppCompatActivity() {
     private fun createTopic() {
         val topic = Topic(name = getTextString(R.id.et_topic_name),
                 professorName = getTextString(R.id.et_topic_professor_name),
-                description = getTextString(R.id.et_topic_description),
                 course = course)
 
         courseService.createOrUpdateTopic(topic)

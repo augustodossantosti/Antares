@@ -36,7 +36,6 @@ class TopicAdapter(private val context: Context) : RecyclerView.Adapter<TopicAda
         val topic = topics[position]
         holder.name.text = "${topic.name}"
         holder.professorName.text = "${topic.professorName}"
-        holder.description.text = "${topic.description}"
 
         holder.parentView.setOnClickListener {
             val intent = Intent(context, ListLessons::class.java)
@@ -57,7 +56,6 @@ class TopicAdapter(private val context: Context) : RecyclerView.Adapter<TopicAda
     class TopicView(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.topic_name)
         val professorName: TextView = itemView.findViewById(R.id.topic_professor)
-        val description: TextView = itemView.findViewById(R.id.topic_description)
         val parentView = itemView
     }
 }

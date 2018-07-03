@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.activity_register_lesson.*
 import java.util.*
 
 /**
- *
+ * Tela para cadastros de novas Lissões.
  *
  * @author Augusto Santos
  * @version 1.0
@@ -39,5 +39,10 @@ class RegisterLesson : AppCompatActivity() {
 
         courseService.createOrUpdateLesson(lesson)
         finish()
+    }
+
+    override fun onDestroy() {
+        courseService.closeConnection()
+        super.onDestroy()
     }
 }

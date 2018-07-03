@@ -21,8 +21,11 @@
     <string name="new_topic_description">Descrição:</string>
     <string name="new_lesson_subject">Assunto:</string>
     <string name="new_lesson_description">Descrição:</string>
+    <string name="new_course_name">Curso:</string>
+    <string name="new_course_institution">Instituição:</string>
     <string name="btn_save">Salvar</string>
     <string name="btn_cancel">Cancelar</string>
+    <string name="error_message">Failed!</string>
 
     <!-- Introduction Slides -->
 
@@ -64,7 +67,6 @@
     <string name="mis_grant_permissions">Conceder Permissões</string>
     <string name="please_grant_permissions">Você deve liberar a utilização da câmera :)</string>
     <string name="camera_request_rationale">O app requer acesso a câmera</string>
-    <string name="error_message">Failed!</string>
 
 
 </resources>
