@@ -30,6 +30,9 @@ open class BaseActivity : AppCompatActivity() {
     var toolbar: Toolbar? = null
     private var currentPhotoPath: Uri? = null
 
+    /**
+     *
+     */
     fun takeAPhoto(): Uri? {
         validateCameraPermissions()
         return currentPhotoPath

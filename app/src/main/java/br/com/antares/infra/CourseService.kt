@@ -33,7 +33,7 @@ class CourseService(context: Context) {
     fun createOrUpdateLesson(lesson: Lesson): Boolean = lessonDao.createOrUpdate(lesson).numLinesChanged == 1
     fun createOrUpdateRegister(register: Register): Boolean = registerDao.createOrUpdate(register).numLinesChanged == 1
 
-    fun deleteCourse(course: Course): Boolean = courseDao.delete(course) == 1
+    fun deleteCourses(courses: List<Course>): Boolean = courseDao.delete(courses) == courses.size
     fun deleteTopic(topic: Topic): Boolean = topicDao.delete(topic) == 1
     fun deleteLesson(lesson: Lesson): Boolean = lessonDao.delete(lesson) == 1
     fun deleteRegister(register: Register): Boolean = registerDao.delete(register) == 1

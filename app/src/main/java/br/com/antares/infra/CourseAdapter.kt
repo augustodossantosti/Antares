@@ -2,12 +2,15 @@ package br.com.antares.infra
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import br.com.antares.R
+import br.com.antares.activities.ListCourses
 import br.com.antares.activities.ListTopics
 import br.com.antares.domain.course.Course
 
@@ -18,29 +21,27 @@ import br.com.antares.domain.course.Course
  * @author Augusto Santos
  * @version 1.0
  */
-class CourseAdapter(private val context: Context) : RecyclerView.Adapter<CourseAdapter.CourseView>() {
+class CourseAdapter(private val context: Context) : RecyclerView.Adapter<CourseAdapter.ViewHolder>() {
 
     private var courses: List<Course> = mutableListOf()
+    private val containerActivity = context as ListCourses
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseView {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.adapter_course, parent, false)
-        return CourseView(view)
+        return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return courses.size
     }
 
-    override fun onBindViewHolder(holder: CourseView, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val course = courses[position]
         holder.name.text = "${course.name}"
         holder.institution.text = "${course.institution}"
 
-        holder.parentView.setOnClickListener {
-            val intent = Intent(context, ListTopics::class.java)
-            intent.putExtra(Course.COURSE, course)
-            context.startActivity(intent)
-        }
+        holder.itemView.setOnClickListener { onItemClick(it, course) }
+        holder.itemView.setOnLongClickListener { onItemSelected(it, course) }
     }
 
     fun updateCourses(courses: List<Course>) {
@@ -48,13 +49,35 @@ class CourseAdapter(private val context: Context) : RecyclerView.Adapter<CourseA
         notifyDataSetChanged()
     }
 
-    /**
-     *  Define o ViewHolder que contém os dados referentes a cursos
-     *  cadastrados pelo usuário.
-     */
-    class CourseView(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    fun getSelectedItems(): List<Course> {
+        return courses.filter { it.isSelected }
+    }
+
+    private fun onItemClick(view: View, course: Course) {
+
+        if (course.isSelected) {
+            val selectedImageView: AppCompatImageView? = view.findViewById(R.id.is_selected_image)
+            selectedImageView?.visibility = View.INVISIBLE
+            view.setBackgroundColor(Color.TRANSPARENT)
+            course.isSelected = false
+        } else {
+            val intent = Intent(context, ListTopics::class.java)
+            intent.putExtra(Course.COURSE, course)
+            context.startActivity(intent)
+        }
+    }
+
+    private fun onItemSelected(view: View, course: Course): Boolean {
+        val selectedImageView: AppCompatImageView? = view.findViewById(R.id.is_selected_image)
+        selectedImageView?.visibility = View.VISIBLE
+        view.setBackgroundColor(Color.LTGRAY)
+        course.isSelected = true
+        containerActivity.showContextMenu()
+        return true
+    }
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.course_name)
         val institution: TextView = itemView.findViewById(R.id.course_institution)
-        val parentView: View = itemView
     }
 }

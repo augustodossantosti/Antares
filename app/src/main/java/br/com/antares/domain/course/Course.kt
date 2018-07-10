@@ -21,6 +21,9 @@ data class Course(@DatabaseField(columnName = "COU_ID", generatedId = true) var 
                   @DatabaseField(columnName = "COU_COVER_PATH") var coverPath: String? = null,
                   @ForeignCollectionField var topics: ForeignCollection<Topic>? = null) : Parcelable {
 
+    @DatabaseField(persisted = false)
+    var isSelected = false
+
     constructor(parcel: Parcel) : this (
             parcel.readValue(Long::class.java.classLoader) as? Long,
             parcel.readString(),

@@ -1,27 +1,23 @@
 package br.com.antares.activities
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Point
-import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.view.animation.DecelerateInterpolator
-import android.widget.ImageView
 import br.com.antares.R
 import br.com.antares.domain.lessons.Lesson
 import br.com.antares.domain.register.Register
 import br.com.antares.domain.register.Type
 import br.com.antares.extensions.onClick
 import br.com.antares.infra.CourseService
+import br.com.antares.infra.RegisterPagerAdapter
 import br.com.antares.infra.RegisterAdapter
+import com.alexvasilkov.gestures.transition.GestureTransitions
+import com.alexvasilkov.gestures.transition.ViewsTransitionAnimator
+import com.alexvasilkov.gestures.transition.tracker.SimpleTracker
 import kotlinx.android.synthetic.main.activity_list_registers.*
 
 
@@ -36,12 +32,11 @@ class ListRegisters : BaseActivity() {
 
     private val courseService = CourseService(this)
     private val registerAdapter = RegisterAdapter(this)
-    private val registers = ArrayList<Register>()
+    private val pageAdapter = RegisterPagerAdapter(this)
     private var lesson: Lesson? = null
+    private val registers = ArrayList<Register>()
     private var currentPhotoPath: Uri? = null
-
-    private var mCurrentAnimator: Animator? = null
-    private var mShortAnimationDuration: Int? = null
+    private var animator: ViewsTransitionAnimator<Int>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,17 +49,31 @@ class ListRegisters : BaseActivity() {
         recycler_register.layoutManager = GridLayoutManager(this, 2, RecyclerView.VERTICAL, false)
         recycler_register.adapter = registerAdapter
 
-        val lesson = intent.extras.getParcelable<Lesson>(Lesson.LESSON)
-        registers.addAll(savedInstanceState?.getParcelableArrayList(Register.REGISTER_LIST)
-                ?: (lesson.registers?.toList() ?: emptyList()))
-        this.lesson = lesson
+        recycler_pager.adapter = pageAdapter
+        recycler_pager.pageMargin = resources.getDimensionPixelSize(R.dimen.view_pager_margin)
+
+        lesson = intent.extras.getParcelable(Lesson.LESSON)
+        registers.addAll(savedInstanceState?.getParcelableArrayList(Register.REGISTER_LIST) ?: (lesson?.registers?.toList() ?: emptyList()))
         updateList(registers)
+
+        animator = GestureTransitions.from(recycler_register, object : SimpleTracker() {
+            override fun getViewAt(position: Int): View? {
+                val holder = recycler_register.findViewHolderForLayoutPosition(position)
+                return if (holder != null) (holder as RegisterAdapter.RegisterView).imageView else null
+            }
+        }).into(recycler_pager, object : SimpleTracker() {
+            override fun getViewAt(position: Int): View? {
+                val holder = pageAdapter.getViewHolder(position)
+                return holder?.image
+            }
+        })
+
+        animator?.addPositionUpdateListener { pos, _ -> applyImageAnimationState(pos) }
 
         onClick(R.id.new_register) {
             currentPhotoPath = takeAPhoto()
         }
 
-        mShortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -89,108 +98,25 @@ class ListRegisters : BaseActivity() {
         super.onSaveInstanceState(outState)
     }
 
-    private fun updateList(lessons: List<Register>) {
-        registerAdapter.updateLessons(lessons)
+    override fun onBackPressed() {
+        if (!animator!!.isLeaving) {
+            animator!!.exit(true)
+        } else {
+            super.onBackPressed()
+        }
     }
 
-    fun zoomImageFromThumb(thumbView: View, imageUri: Uri) {
+    fun onRegisterClick(position: Int) {
+        animator!!.enter(position, true)
+    }
 
-        mCurrentAnimator?.cancel()
+    private fun updateList(lessons: List<Register>) {
+        registerAdapter.updateLessons(lessons)
+        pageAdapter.updateLessons(lessons)
+    }
 
-        val expandedImageView = findViewById<ImageView>(R.id.expanded_image)
-        expandedImageView.setImageURI(imageUri)
-
-        val startBounds = Rect()
-        val finalBounds = Rect()
-        val globalOffset = Point()
-
-        thumbView.getGlobalVisibleRect(startBounds)
-        findViewById<View>(R.id.container).getGlobalVisibleRect(finalBounds, globalOffset)
-        startBounds.offset(-globalOffset.x, -globalOffset.y)
-        finalBounds.offset(-globalOffset.x, -globalOffset.y)
-
-        val startScale: Float
-        if ((finalBounds.width().toFloat()).div(finalBounds.height()) > (startBounds.width().toFloat()).div(startBounds.height())) {
-            startScale = startBounds.height().toFloat() / finalBounds.height()
-            val startWidth = startScale * finalBounds.width()
-            val deltaWidth = (startWidth - startBounds.width()) / 2
-            startBounds.left -= deltaWidth.toInt()
-            startBounds.right += deltaWidth.toInt()
-        } else {
-            startScale = startBounds.width().toFloat() / finalBounds.width()
-            val startHeight = startScale * finalBounds.height()
-            val deltaHeight = (startHeight - startBounds.height()) / 2
-            startBounds.top -= deltaHeight.toInt()
-            startBounds.bottom += deltaHeight.toInt()
-        }
-
-        thumbView.alpha = 0f
-        expandedImageView.visibility = View.VISIBLE
-        expandedImageView.pivotX = 0f
-        expandedImageView.pivotY = 0f
-
-        val set = AnimatorSet()
-        set
-                .play(ObjectAnimator.ofFloat(expandedImageView, View.X,
-                        startBounds.left.toFloat(), finalBounds.left.toFloat()))
-
-                .with(ObjectAnimator.ofFloat(expandedImageView, View.Y,
-                        startBounds.top.toFloat(), finalBounds.top.toFloat()))
-
-                .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X,
-                        startScale, 1f))
-
-                .with(ObjectAnimator.ofFloat(expandedImageView,
-                        View.SCALE_Y, startScale, 1f))
-
-        set.duration = mShortAnimationDuration!!.toLong()
-        set.interpolator = DecelerateInterpolator()
-        set.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                mCurrentAnimator = null
-            }
-
-            override fun onAnimationCancel(animation: Animator) {
-                mCurrentAnimator = null
-            }
-        })
-        set.start()
-        mCurrentAnimator = set
-
-        expandedImageView.setOnClickListener {
-            mCurrentAnimator?.cancel()
-
-            val set = AnimatorSet()
-            set.play(ObjectAnimator
-                    .ofFloat(expandedImageView, View.X, startBounds.left.toFloat()))
-
-                    .with(ObjectAnimator
-                            .ofFloat(expandedImageView,View.Y, startBounds.top.toFloat()))
-
-                    .with(ObjectAnimator
-                            .ofFloat(expandedImageView, View.SCALE_X, startScale))
-
-                    .with(ObjectAnimator
-                            .ofFloat(expandedImageView, View.SCALE_Y, startScale))
-
-            set.duration = mShortAnimationDuration!!.toLong()
-            set.interpolator = DecelerateInterpolator()
-            set.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    thumbView.alpha = 1f
-                    expandedImageView.visibility = View.GONE
-                    mCurrentAnimator = null
-                }
-
-                override fun onAnimationCancel(animation: Animator) {
-                    thumbView.alpha = 1f
-                    expandedImageView.visibility = View.GONE
-                    mCurrentAnimator = null
-                }
-            })
-            set.start()
-            mCurrentAnimator = set
-        }
-
+    private fun applyImageAnimationState(position: Float) {
+        recycler_full_background.visibility = if (position == 0f) View.INVISIBLE else View.VISIBLE
+        recycler_full_background.alpha = position
     }
 }

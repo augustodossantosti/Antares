@@ -37,7 +37,7 @@ class TopicAdapter(private val context: Context) : RecyclerView.Adapter<TopicAda
         holder.name.text = "${topic.name}"
         holder.professorName.text = "${topic.professorName}"
 
-        holder.parentView.setOnClickListener {
+        holder.itemView.setOnClickListener {
             val intent = Intent(context, ListLessons::class.java)
             intent.putExtra(Topic.TOPIC, topic)
             context.startActivity(intent)
@@ -49,13 +49,8 @@ class TopicAdapter(private val context: Context) : RecyclerView.Adapter<TopicAda
         notifyDataSetChanged()
     }
 
-    /**
-     *  Define o ViewHolder que contém os dados referentes a topicos
-     *  cadastrados pelo usuário.
-     */
     class TopicView(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.topic_name)
         val professorName: TextView = itemView.findViewById(R.id.topic_professor)
-        val parentView = itemView
     }
 }

@@ -3,6 +3,7 @@
     <color name="colorPrimary">#0d122d</color>
     <color name="colorPrimaryDark">#030618</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="primary_light">#e6f2e7</color>
     
     <!-- CORES PARA A TELA DE INTRODUÇÃO -->
     <color name="slide_button">#66000000</color>

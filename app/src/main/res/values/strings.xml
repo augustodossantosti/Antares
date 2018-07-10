@@ -67,6 +67,8 @@
     <string name="mis_grant_permissions">Conceder Permissões</string>
     <string name="please_grant_permissions">Você deve liberar a utilização da câmera :)</string>
     <string name="camera_request_rationale">O app requer acesso a câmera</string>
+    <string name="opt_delete_item">Delete</string>
+    <string name="opt_rename_item">Rename</string>
 
 
 </resources>

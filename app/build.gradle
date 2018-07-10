@@ -36,6 +36,8 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     kapt 'com.jakewharton:butterknife-compiler:8.8.1'
 
+    implementation 'com.github.bumptech.glide:glide:4.6.1'
+
     // Lib para gerenciar permissões de acesso ao hardware
     implementation 'pub.devrel:easypermissions:1.2.0'
 

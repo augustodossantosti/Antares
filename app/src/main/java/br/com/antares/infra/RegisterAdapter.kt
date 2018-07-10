@@ -3,6 +3,8 @@ package br.com.antares.infra
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
+import android.support.v4.widget.ImageViewCompat
+import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,10 @@ import br.com.antares.R
 import br.com.antares.activities.ListRegisters
 import br.com.antares.domain.register.Register
 import com.alexvasilkov.gestures.views.GestureImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.view.SimpleDraweeView
 import com.facebook.imagepipeline.common.ResizeOptions
@@ -19,7 +25,8 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder
 import java.io.File
 
 /**
- *
+ * Define o Adapter que representa cada registros cadastrados
+ * pelo usuário para que eles possam ser exibidos na RecyclerView.
  *
  * @author Augusto Santos
  * @version 1.0
@@ -39,35 +46,10 @@ class RegisterAdapter(private val context: Context) : RecyclerView.Adapter<Regis
 
     override fun onBindViewHolder(holder: RegisterView, position: Int) {
         val register = registers[position]
-
-        val cursor = context.contentResolver.query(Uri.parse(register.filepath),
-                Array(1) { MediaStore.Images.ImageColumns.DATA},
-                null, null, null)
-        cursor.moveToFirst()
-        val photoPath = cursor.getString(0)
-        cursor.close()
-        val file = File(photoPath)
-        val uri = Uri.fromFile(file)
-        val height = context.resources.getDimensionPixelSize(R.dimen.photo_height)
-        val width = context.resources.getDimensionPixelSize(R.dimen.photo_width)
-
-        val request = ImageRequestBuilder.newBuilderWithSource(uri)
-                .setResizeOptions(ResizeOptions(width, height))
-                .build()
-
-        val controller = Fresco.newDraweeControllerBuilder()
-                .setOldController(holder.photoView.controller)
-                .setImageRequest(request)
-                .build()
-
-        holder.photoView.controller = controller
-
-        holder.parentView.setOnClickListener {
+        loadThumbImage(register, holder.imageView)
+        holder.itemView.setOnClickListener {
             context as ListRegisters
-            context.zoomImageFromThumb(holder.parentView, uri)
-//            val gestureImageView = context.findViewById<GestureImageView>(R.id.photo_output_full)
-//            gestureImageView.setImageURI(uri)
-//            gestureImageView.visibility = View.VISIBLE
+            context.onRegisterClick(position)
         }
     }
 
@@ -77,7 +59,16 @@ class RegisterAdapter(private val context: Context) : RecyclerView.Adapter<Regis
     }
 
     class RegisterView(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val photoView: SimpleDraweeView = itemView.findViewById(R.id.photo_output)
-        val parentView = itemView
+        val imageView: AppCompatImageView = itemView.findViewById(R.id.photo_output)
+    }
+
+    private fun loadThumbImage(register: Register, imageView: AppCompatImageView) {
+
+        val imageUri: Uri = Uri.parse(register.filepath)
+
+        Glide.with(imageView)
+                .load(imageUri)
+                .thumbnail(0.1f)
+                .into(imageView)
     }
 }

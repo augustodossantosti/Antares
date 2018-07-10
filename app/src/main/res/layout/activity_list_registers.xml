@@ -35,18 +35,17 @@
             app:srcCompat="@drawable/ic_add_a_photo_black"
             app:elevation="4dp" />
 
-        <ImageView
-            android:id="@+id/expanded_image"
+        <View
+            android:id="@+id/recycler_full_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible"/>
+            android:background="@color/primary_light"
+            android:visibility="invisible" />
 
-        <com.alexvasilkov.gestures.views.GestureImageView
-            android:id="@+id/photo_output_full"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/recycler_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:visibility="invisible"/>
+            android:layout_height="match_parent" />
 
     </FrameLayout>
 

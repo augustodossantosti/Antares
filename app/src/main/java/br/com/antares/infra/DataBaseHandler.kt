@@ -11,7 +11,7 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper
 import com.j256.ormlite.support.ConnectionSource
 import com.j256.ormlite.table.TableUtils
 
-class DataBaseHandler(context: Context) : OrmLiteSqliteOpenHelper(context, "APP-COURSE.DB",
+class DataBaseHandler(context: Context) : OrmLiteSqliteOpenHelper(context, "ANTARES.DB",
         null, 1) {
 
     override fun onCreate(database: SQLiteDatabase?, connectionSource: ConnectionSource?) {

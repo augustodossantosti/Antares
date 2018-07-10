@@ -6,8 +6,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".utils.Application"
@@ -30,7 +28,6 @@
         <activity android:name=".activities.RegisterCourse" />
         <activity android:name=".activities.ListTopics" />
         <activity android:name=".activities.RegisterTopic" />
-        <activity android:name=".activities.BaseActivity" />
         <activity android:name=".activities.ListLessons" />
         <activity android:name=".activities.RegisterLesson" />
         <activity android:name=".activities.ListRegisters" />
