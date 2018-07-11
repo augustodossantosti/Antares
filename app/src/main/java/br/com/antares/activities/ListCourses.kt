@@ -26,6 +26,7 @@ class ListCourses : BaseActivity(), ActionMode.Callback {
     private val courseService = CourseService(this)
     private val courseAdapter = CourseAdapter(this)
     private val courses = ArrayList<Course>()
+    private var actionMode : ActionMode? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +79,10 @@ class ListCourses : BaseActivity(), ActionMode.Callback {
         return false
     }
 
-    override fun onDestroyActionMode(mode: ActionMode?) {}
+    override fun onDestroyActionMode(mode: ActionMode?) {
+        actionMode = null
+        courseAdapter.removeSelections()
+    }
 
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
         val itemId = item?.itemId
@@ -96,8 +100,22 @@ class ListCourses : BaseActivity(), ActionMode.Callback {
         return false
     }
 
+    override fun onBackPressed() {
+        if (actionMode != null) {
+            actionMode?.finish()
+            actionMode = null
+            courseAdapter.removeSelections()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     fun showContextMenu() {
-        startSupportActionMode(this)
+        actionMode = startSupportActionMode(this)
+    }
+
+    fun isActionModeActive(): Boolean {
+        return actionMode != null
     }
 
     private fun deleteSelectedItemns() {

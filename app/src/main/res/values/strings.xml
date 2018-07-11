@@ -10,7 +10,7 @@
     <!-- Activities titles -->
 
     <string name="activity_courses_title">Cursos</string>
-    <string name="activity_lessons_title">Lissões</string>
+    <string name="activity_lessons_title">Lições</string>
     <string name="activity_topics_title">Tópicos</string>
     <string name="activity_registers_title">Registros</string>
 
